@@ -28,7 +28,7 @@ define( 'MG_EDD_DODOPAYMENTS_DIR', plugin_dir_path( MG_EDD_DODOPAYMENTS_FILE ) )
 define( 'MG_EDD_DODOPAYMENTS_URL', plugin_dir_url( MG_EDD_DODOPAYMENTS_FILE ) );
 
 // Automatically loads files used throughout the plugin.
-require_once PERFORM_PLUGIN_DIR . 'vendor/autoload.php';
+require_once MG_EDD_DODOPAYMENTS_DIR . 'vendor/autoload.php';
 
 // Initialize the plugin.
 $plugin = new Plugin();

@@ -2,6 +2,7 @@
 namespace MG\EDD\DodoPayments;
 
 use MG\EDD\DodoPayments\Admin;
+use MG\EDD\DodoPayments\Includes;
 
 // Bailout, if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -46,8 +47,10 @@ final class Plugin {
 	public function register_services() {
 		// Load Admin Files.
 		new Admin\Filters();
+		new Admin\Actions();
 
 		// Load Frontend Files.
+		new Includes\Actions();
 		
 	}
 

@@ -23,9 +23,6 @@ class Actions {
 
     public function process_payment( $data ) {
 
-        //echo "<pre>";
-        //print_r($data);
-
         // Get the serialized settings data from wp_options
         $stored_data = get_option('edd_settings');
 
@@ -59,11 +56,7 @@ class Actions {
                     'body'    => wp_json_encode( $queryParams ),
                 ]
             );
-    
-            //echo "<pre>";
-            //print_r($response);
-            //print_r($response['http_response']->get_response_object());
-            
+       
             if ( ! is_wp_error( $response ) ) {
                 
                 $decoded_response = json_decode( wp_remote_retrieve_body( $response) );
@@ -75,15 +68,16 @@ class Actions {
                     $paymentUrl = $decoded_response->payment_link;
                     
                     // Redirect to gateway URL.
-                    wp_safe_redirect($paymentUrl);
+                    wp_redirect($paymentUrl);
+                    exit();
                 } else {
                     // Error.
                     edd_set_error( 'dodo_error', $decoded_response->message );
                     edd_send_back_to_checkout( '?payment-mode=' . $gateway );
                 }
             }
-            wp_die();
         }
+        wp_die();
     }
 
     /**
@@ -95,10 +89,10 @@ class Actions {
         return [
             'billing' => [
                 'city' => $data['post_data']['card_city'],
-                'state' => $data['post_data']['card_state'],
-                'zipcode' => $data['post_data']['card_zip'],
                 'country' => $data['post_data']['billing_country'],
+                'state' => $data['post_data']['card_state'],
                 'street' => ! empty( $data['post_data']['card_address_2'] ) ? "{$data['post_data']['card_address']} {$data['post_data']['card_address_2']}" : $data['post_data']['card_address'],
+                'zipcode' => $data['post_data']['card_zip'],
             ],
             'customer' => [
                 'email' => $data['post_data']['edd_email'],
@@ -107,7 +101,7 @@ class Actions {
             ],
             'product_id' => 'pdt_9PIwJvIT3pUFHhQZ5n5ho',
             'quantity' => 1,
-            'paymentlink' => true,
+            'payment_link' => true,
         ];
     }
 }
